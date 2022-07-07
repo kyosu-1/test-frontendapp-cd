@@ -8,3 +8,8 @@ terraform {
     aws = "~>4.0"
   }
 }
+
+module "frontend_app" {
+  source = "../modules/frontend"
+  bucket_name = "sample-frontend-app.com"
+}
