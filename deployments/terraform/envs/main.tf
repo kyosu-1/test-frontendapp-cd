@@ -11,5 +11,5 @@ terraform {
 
 module "frontend_app" {
   source      = "../modules/frontend"
-  bucket_name = "sample-frontend-app.com"
+  bucket_name = "sample-frontend-app"
 }
