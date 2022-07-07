@@ -8,8 +8,8 @@ resource "aws_s3_bucket_acl" "website_acl" {
 }
 
 resource "aws_s3_bucket_policy" "bucket_policy" {
-    bucket = aws_s3_bucket.bucket.id
-    policy = data.aws_iam_policy_document.s3_policy.json
+  bucket = aws_s3_bucket.bucket.id
+  policy = data.aws_iam_policy_document.s3_policy.json
 }
 
 resource "aws_s3_bucket_website_configuration" "website_config" {
@@ -26,18 +26,18 @@ resource "aws_s3_bucket_website_configuration" "website_config" {
 
 data "aws_iam_policy_document" "s3_policy" {
   statement {
-    sid = "Allow CloudFront"
+    sid    = "Allow CloudFront"
     effect = "Allow"
     principals {
-        type = "AWS"
-        identifiers = [aws_cloudfront_origin_access_identity.cloudfront.iam_arn]
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.cloudfront.iam_arn]
     }
     actions = [
-        "s3:GetObject"
+      "s3:GetObject"
     ]
 
     resources = [
-        "${aws_s3_bucket.bucket.arn}/*"
+      "${aws_s3_bucket.bucket.arn}/*"
     ]
   }
 }
