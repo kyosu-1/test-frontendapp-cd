@@ -7,3 +7,5 @@
 ```bash=
 $ bash ./init_terraform_bucket.sh test-frontendapp-cd-tfstate
 ```
+
+[アクセス](https://d15m2dt650w6jc.cloudfront.net/)
