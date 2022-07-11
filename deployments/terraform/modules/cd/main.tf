@@ -1,10 +1,20 @@
+data "terraform_remote_state" "common_resource" {
+  backend = "s3"
+
+  config = {
+    bucket = "kyosu-common-tfstate"
+    key    = "terraform.tfstate"
+    region = "ap-northeast-1"
+  }
+}
+
 data "aws_iam_policy_document" "github_actions_assume_role_policy" {
   statement {
     effect  = "Allow"
     actions = ["sts:AssumeRoleWithWebIdentity"]
     principals {
       type        = "Federated"
-      identifiers = ["arn:aws:iam::738925651667:oidc-provider/token.actions.githubusercontent.com"]
+      identifiers = ["${data.terraform_remote_state.common_resource.outputs.github_actions_oidc_arn}"]
     }
     condition {
       test     = "StringLike"
