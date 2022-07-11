@@ -1,0 +1,40 @@
+name: Deploy production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: configure aws
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-region: ap-northeast-1
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+    - name: use node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - run: npm ci typescript
+    - run: npm ci
+    - name: build app
+      run: npm run build
+    - name: Archive npm failure logs
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: npm-logs
+        path: ~/.npm/_logs
+    - name: upload file to S3
+      run: aws s3 cp build/ s3://sample-frontend-app --recursive
