@@ -13,3 +13,8 @@ module "frontend_app" {
   source      = "../modules/frontend"
   bucket_name = "sample-frontend-app"
 }
+
+module "github_actions" {
+  source = "../modules/cd"
+  s3_arn = module.frontend_app.s3_arn
+}
