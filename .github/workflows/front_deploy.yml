@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  s3_deploy:
 
     runs-on: ubuntu-latest
 
